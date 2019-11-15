@@ -1,27 +1,39 @@
+const userTimeout = require('./lib/userTimeout');
 
+(function () {
 
-const UserTimeout = {
+  /**
+   * Install plugin
+   * @param Vue
+   * @param options
+   */
+  function plugin(Vue, axios) {
 
-  plugin(Vue, options) {
-    console.log('plugin installed');
+    if (plugin.installed) {
+      return
+    }
+    plugin.installed = true;
+    
+    Vue.$userTimeout = userTimeout;
 
-    // Handle options
+    Object.defineProperties(Vue.prototype, {
 
+      $userTimeout: {
+        get() {
+          return userTimeout
+        }
+      }
 
-    // Define instance properties
-
-
-    // Add directives
-
+    })
   }
-};
-
 
 // Logic to determine how to include the plugin
 if (typeof exports == "object") {
-  module.exports = UserTimeout
+  module.exports = plugin
 } else if (typeof define == "function" && define.amd) {
   define([], function(){ return plugin })
 } else if (window.Vue && typeof window !== 'undefined') {
-  Vue.use(UserTimeout, options)
+  Vue.use(plugin, options)
 }
+
+})();
