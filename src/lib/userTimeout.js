@@ -1,10 +1,7 @@
 export default {
-
   // properties
-  test: "Test",
+  test: 'Test',
 
   // methods
-  init: (options) => {
-
-  }
+  init: options => {},
 };

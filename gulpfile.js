@@ -6,11 +6,14 @@ const packageName = require('./package').name;
 const webpack = require('webpack-stream');
 
 gulp.task('default', () => {
-  return gulp.src('src/index.js')
-    .pipe(webpack( require('./webpack.config.js')))
-    .pipe(babel({
-      presets: ['@babel/preset-env']
-    }))
+  return gulp
+    .src('src/index.js')
+    .pipe(webpack(require('./webpack.config.js')))
+    .pipe(
+      babel({
+        presets: ['@babel/preset-env'],
+      })
+    )
     .pipe(rename(`${packageName}.es5.js`))
     .pipe(gulp.dest('dist'))
     .pipe(uglify())
