@@ -3,5 +3,9 @@ export default {
   test: 'Test',
 
   // methods
-  init: options => {},
+  init: options => {
+    if (options) {
+      console.log('yay');
+    }
+  },
 };
