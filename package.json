@@ -2,14 +2,20 @@
   "name": "vue-user-timeout",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/vue-user-timeout.min.es5.js",
+  "main": "dist/vue-user-timeout.min.js",
   "directories": {
     "lib": "lib"
   },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/.bin/eslint --fix --color src/**",
-    "build": "gulp",
+    "build": "webpack",
     "cm": "npx git-cz"
   },
   "repository": {
@@ -22,12 +28,10 @@
     "url": "https://github.com/jrtnq514/vue-user-timeout/issues"
   },
   "homepage": "https://github.com/jrtnq514/vue-user-timeout#readme",
-  "dependencies": {
-    "npm": "^6.13.0"
-  },
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
+    "babel-loader": "^8.0.6",
     "cz-conventional-changelog": "^3.0.2",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
@@ -43,7 +47,14 @@
     "lint-staged": "^9.4.3",
     "prettier": "^1.19.1",
     "semantic-release": "^15.13.30",
+    "terser-webpack-plugin": "^2.2.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-merge": "^4.2.2",
     "webpack-stream": "^5.2.1"
+  },
+  "peerDependencies": {
+    "vue": ">= 1.0.0"
   },
   "config": {
     "commitizen": {
