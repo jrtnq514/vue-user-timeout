@@ -54,7 +54,7 @@
     "webpack-stream": "^5.2.1"
   },
   "peerDependencies": {
-    "vue": ">= 1.0.0"
+    "vue": ">= 2.0.0"
   },
   "config": {
     "commitizen": {

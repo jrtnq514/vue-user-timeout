@@ -4,6 +4,7 @@ const VueUserTimeout = {
   // eslint-disable-next-line no-unused-vars
   install(Vue, options = {}) {
     console.log('VueUserTimeout Installed');
+    userTimeout.init(Vue, options);
     // eslint-disable-next-line no-param-reassign
     Vue.prototype.$userTimeout = userTimeout;
     // eslint-disable-next-line no-param-reassign
