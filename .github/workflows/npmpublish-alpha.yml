@@ -22,11 +22,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - uses: codecov/codecov-action@v1
         with:
+          node-version: 12
           token: ${{ secrets.CODECOV_TOKEN }} #required
-          file: /coverage/coverage-final.json #optional
           flags: unittests #optional
           name: codecov-umbrella #optional
           fail_ci_if_error: true #optional (default = false)
