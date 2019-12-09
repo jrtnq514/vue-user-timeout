@@ -22,6 +22,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - run: npm test
       - uses: actions/checkout@v1
       - uses: codecov/codecov-action@v1
         with:
