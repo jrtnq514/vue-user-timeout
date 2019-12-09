@@ -20,6 +20,7 @@ jobs:
 
   codecov:
     needs: build
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - uses: codecov/codecov-action@v1
