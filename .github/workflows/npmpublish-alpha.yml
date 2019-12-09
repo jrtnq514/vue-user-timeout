@@ -15,8 +15,20 @@ jobs:
           node-version: 12
       - run: npm ci
       - run: npm run lint
-#      - run: npm test
+      - run: npm test
       - run: npm run build
+
+  codecov:
+    needs: build
+    steps:
+      - uses: actions/checkout@master
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} #required
+          file: ./coverage/coverage-final.json #optional
+          flags: unittests #optional
+          name: codecov-umbrella #optional
+          fail_ci_if_error: true #optional (default = false)
 
   publish-npm:
     needs: build

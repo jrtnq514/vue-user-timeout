@@ -19,27 +19,27 @@ Vue.use(VueUserTimeout, [options])
 
 
 ## Methods
-**init()**: Initializes the user timeout using the default options. Also adds event listeners for resetting the timeout.
+**init()** - Initializes the user timeout using the default options. Also adds event listeners for resetting the timeout.
 ```javascript
 this.$vueUserTimeout.init([options])
 ```
-**start()**: Starts the user timeout interval.
+**start()** - Starts the user timeout interval.
 ```javascript
 this.$vueUserTimeout.start()
 ```
-**reset()**: Resets the timeout and elapsed time to zero. It will automatically start again if `destroyOnTimeout` is false.
+**reset()** - Resets the timeout and elapsed time to zero. It will automatically start again if `destroyOnTimeout` is false.
 ```javascript
 this.$vueUserTimeout.reset()
 ```
-**stop()**: Stops the timeout and sets the elapsed time to zero.
+**stop()** - Stops the timeout and sets the elapsed time to zero.
 ```javascript
 this.$vueUserTimeout.stop()
 ```
-**pause()**: Pauses the timeout and keeps the current elapsed time.
+**pause()** - Pauses the timeout and keeps the current elapsed time.
 ```javascript
 this.$vueUserTimeout.pause()
 ```
-**destroy()**: Removes all event listeners and clears any options passed in on Init. `init()` maybe called again after `destroy`.
+**destroy()** - Removes all event listeners and clears any options passed in on Init. `init()` maybe called again after `destroy`.
 ```javascript
 this.$vueUserTimeout.destroy()
 ```

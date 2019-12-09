@@ -16,7 +16,7 @@ export default Vue => {
         const defaultOptions = {
           timeout: 60000, // 10 min
           updateInterval: 500, // .5 sec
-          events: ['resize', 'scroll', 'keydown', 'mousemove'],
+          events: ['resize', 'scroll', 'keydown', 'mousemove', 'click'],
           startOnload: false,
           destroyOnTimeout: true,
         };
@@ -36,16 +36,16 @@ export default Vue => {
               this.start();
             }
           })
-          .catch(() => {
+          .catch(err => {
+            console.log(err);
             console.log('There was an error adding event listeners');
           });
       },
 
       start() {
-        console.log(this);
         // prevent start being called while it's already running
         if (this.isActive || !this.isInitialized) {
-          console.log('invalid start');
+          this.$emit('timeout-warning', 'Timeout has already been started.');
           return;
         }
         if (this.startTime === null) {
@@ -69,7 +69,11 @@ export default Vue => {
       },
 
       reset() {
-        if (!this.isActive && !this.isInitialized) {
+        if (!this.isInitialized) {
+          this.$emit(
+            'timeout-warning',
+            "reset() - Timeout hasn't been initialized."
+          );
           return;
         }
         this.stop();
@@ -80,7 +84,11 @@ export default Vue => {
       },
 
       stop() {
-        if (!this.isActive && !this.isInitialized) {
+        if (!this.isActive || !this.isInitialized) {
+          this.$emit(
+            'timeout-warning',
+            "stop() - Timeout hasn't been initialized or hasn't been started."
+          );
           return;
         }
         clearInterval(this.timerInterval);
@@ -90,7 +98,11 @@ export default Vue => {
       },
 
       pause() {
-        if (!this.isActive && !this.isInitialized) {
+        if (!this.isActive || !this.isInitialized) {
+          this.$emit(
+            'timeout-warning',
+            "pause() - Timeout hasn't been initialized or hasn't been started."
+          );
           return;
         }
         clearInterval(this.timerInterval);
