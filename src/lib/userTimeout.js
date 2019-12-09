@@ -1,113 +1,138 @@
-const userTimeout = {
-  // properties
-  Vue: null,
-  mergedOptions: null,
-  timerInterval: null,
-  startTime: null,
-  currentTime: null,
-  active: false,
-
-  // methods
-  init: (Vue, options) => {
-    userTimeout.Vue = Vue;
-    const defaultOptions = {
-      timeout: 10000, // 10 min
-      updateInterval: 500, // 1 sec
-      events: ['resize', 'scroll', 'keydown', 'click', 'mousemove'],
-      startOnload: false,
-      destroyOnTimeout: true,
-    };
-
-    if (options) {
-      userTimeout.mergedOptions = {
-        ...defaultOptions,
-        ...options,
+export default Vue => {
+  return new Vue({
+    data() {
+      return {
+        mergedOptions: null,
+        timerInterval: null,
+        startTime: null,
+        currentTime: null,
+        elapsedTime: null,
+        isActive: false,
+        isInitialized: false,
       };
-      userTimeout.active = userTimeout.mergedOptions.startOnload;
-    }
+    },
+    methods: {
+      init(options) {
+        const defaultOptions = {
+          timeout: 60000, // 10 min
+          updateInterval: 500, // .5 sec
+          events: ['resize', 'scroll', 'keydown', 'mousemove'],
+          startOnload: false,
+          destroyOnTimeout: true,
+        };
 
-    userTimeout
-      .addListeners()
-      .then(() => {
-        // start the time
-        if (userTimeout.mergedOptions.startOnload) {
-          userTimeout.start();
+        this.mergedOptions = {
+          ...defaultOptions,
+          ...options,
+        };
+
+        // eslint-disable-next-line no-underscore-dangle
+        this._addListeners()
+          .then(() => {
+            this.$emit('timeout-initialized');
+            // start the time
+            this.isInitialized = true;
+            if (this.mergedOptions.startOnload) {
+              this.start();
+            }
+          })
+          .catch(() => {
+            console.log('There was an error adding event listeners');
+          });
+      },
+
+      start() {
+        console.log(this);
+        // prevent start being called while it's already running
+        if (this.isActive || !this.isInitialized) {
+          console.log('invalid start');
+          return;
         }
-      })
-      .catch(() => {
-        console.log('There was an error adding event listeners');
-      });
-  },
-
-  addListeners: () => {
-    return new Promise((resolve, reject) => {
-      try {
-        userTimeout.mergedOptions.events.forEach(evnt => {
-          document.addEventListener(evnt, userTimeout.reset);
-        });
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  },
-
-  start: () => {
-    if (userTimeout.startTime === null) {
-      userTimeout.startTime = Date.now();
-    }
-    userTimeout.active = true;
-    userTimeout.timerInterval = setInterval(() => {
-      userTimeout.currentTime = Date.now();
-      const elapsedTime = userTimeout.currentTime - userTimeout.startTime;
-      console.log(`tick tick ${(elapsedTime / 1000).toFixed(3)}`);
-      if (elapsedTime >= userTimeout.mergedOptions.timeout) {
-        // emit event
-        console.log(`your time is up ${(elapsedTime / 1000).toFixed(3)}`);
-        userTimeout.stop();
-        if (userTimeout.mergedOptions.destroyOnTimeout) {
-          userTimeout.active = false;
-          userTimeout.destroy();
+        if (this.startTime === null) {
+          this.startTime = Date.now();
         }
-      }
-    }, userTimeout.mergedOptions.updateInterval);
-  },
+        this.isActive = true;
+        this.timerInterval = setInterval(() => {
+          this.currentTime = Date.now();
+          this.elapsedTime = this.currentTime - this.startTime;
+          // console.log(`tick tick ${(this.elapsedTime / 1000).toFixed(3)}`);
+          if (this.elapsedTime >= this.mergedOptions.timeout) {
+            // emit event
+            this.$emit('timeout-completed');
+            this.stop();
+            if (this.mergedOptions.destroyOnTimeout) {
+              this.destroy();
+            }
+          }
+        }, this.mergedOptions.updateInterval);
+        this.$emit('timeout-started');
+      },
 
-  reset: () => {
-    console.log('reset');
-    userTimeout.stop();
-    if (userTimeout.active) {
-      userTimeout.start();
-    }
-  },
+      reset() {
+        if (!this.isActive && !this.isInitialized) {
+          return;
+        }
+        this.stop();
+        if (!this.mergedOptions.destroyOnTimeout) {
+          this.start();
+        }
+        this.$emit('timeout-reset');
+      },
 
-  stop: () => {
-    clearInterval(userTimeout.timerInterval);
-    userTimeout.startTime = null;
-  },
+      stop() {
+        if (!this.isActive && !this.isInitialized) {
+          return;
+        }
+        clearInterval(this.timerInterval);
+        this.startTime = null;
+        this.isActive = false;
+        this.$emit('timeout-stopped');
+      },
 
-  pause: () => {
-    clearInterval(userTimeout.timerInterval);
-    console.log(
-      `currently paused at ${(
-        (userTimeout.currentTime - userTimeout.startTime) /
-        1000
-      ).toFixed(3)}`
-    );
-  },
+      pause() {
+        if (!this.isActive && !this.isInitialized) {
+          return;
+        }
+        clearInterval(this.timerInterval);
+        this.isActive = false;
+        this.$emit('timeout-paused');
+      },
 
-  destroy: () => {
-    return new Promise((resolve, reject) => {
-      try {
-        userTimeout.mergedOptions.events.forEach(evnt => {
-          document.removeEventListener(evnt, userTimeout.reset);
+      destroy() {
+        return new Promise((resolve, reject) => {
+          if (!this.isInitialized) {
+            reject();
+          }
+          try {
+            if (this.isActive) {
+              this.stop();
+            }
+            this.mergedOptions.events.forEach(evnt => {
+              document.removeEventListener(evnt, this.reset);
+            });
+            this.mergedOptions = null;
+            this.isInitialized = false;
+            this.$emit('timeout-destroyed');
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
         });
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  },
+      },
+
+      // eslint-disable-next-line no-underscore-dangle
+      _addListeners() {
+        return new Promise((resolve, reject) => {
+          try {
+            this.mergedOptions.events.forEach(evnt => {
+              document.addEventListener(evnt, this.reset);
+            });
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
+        });
+      },
+    },
+  });
 };
-
-export default userTimeout;

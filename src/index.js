@@ -1,10 +1,11 @@
-import userTimeout from './lib/userTimeout';
+import UserTimeout from './lib/userTimeout';
 
 const VueUserTimeout = {
   // eslint-disable-next-line no-unused-vars
   install(Vue, options = {}) {
-    console.log('VueUserTimeout Installed');
-    userTimeout.init(Vue, options);
+    // console.log('VueUserTimeout Installed');
+    const userTimeout = UserTimeout(Vue);
+    userTimeout.init(options);
     // eslint-disable-next-line no-param-reassign
     Vue.prototype.$userTimeout = userTimeout;
     // eslint-disable-next-line no-param-reassign

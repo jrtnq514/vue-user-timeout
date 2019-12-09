@@ -9,7 +9,7 @@ Install
 npm install --save vue-user-timeout
 ```
 Add plugin to your entry file
-```
+```javascript
 import VueUserTimeout from 'vue-user-timeout'
 
 Vue.use(VueUserTimeout, [options])
@@ -19,6 +19,30 @@ Vue.use(VueUserTimeout, [options])
 
 
 ## Methods
+**init()**: Initializes the user timeout using the default options. Also adds event listeners for resetting the timeout.
+```javascript
+this.$vueUserTimeout.init([options])
+```
+**start()**: Starts the user timeout interval.
+```javascript
+this.$vueUserTimeout.start()
+```
+**reset()**: Resets the timeout and elapsed time to zero. It will automatically start again if `destroyOnTimeout` is false.
+```javascript
+this.$vueUserTimeout.reset()
+```
+**stop()**: Stops the timeout and sets the elapsed time to zero.
+```javascript
+this.$vueUserTimeout.stop()
+```
+**pause()**: Pauses the timeout and keeps the current elapsed time.
+```javascript
+this.$vueUserTimeout.pause()
+```
+**destroy()**: Removes all event listeners and clears any options passed in on Init. `init()` maybe called again after `destroy`.
+```javascript
+this.$vueUserTimeout.destroy()
+```
 
 ## Options
 | property | description | default | values |
@@ -30,6 +54,18 @@ Vue.use(VueUserTimeout, [options])
 | **destroyOnTimeout** | When `true` all listeners will be removed upon completion of the timeout event. *They can be added again using `init()`*. | `true` | `Boolean` |
 
 ## Events
+| event | description |
+|-----------------------|-------------|
+| `timeout-initialized` | $vueUserTimeout has been initialized and is ready to use. |
+| `timeout-completed` | The timeout has completed. |
+| `timeout-started` | The timeout has started. |
+| `timeout-stopped` | The timeout has been stopped. On start it will begin from 0.  |
+| `timeout-reset` | The timeout has been stopped. On start it will begin from 0. If `destroyOnTimeout` is false it will have started the timeout. |
+| `timeout-paused` | The timeout has been paused. On start it will continue where it left off. |
+| `timeout-destroyed` | $vueUserTimeout listeners have been removed and options reset. |
+
+## Caveats
+You cannot call timeout methods on button click if 'click' is a reset event.
 
 ## TODO
 - [ ] Listen for events. Handle only events user specifies
