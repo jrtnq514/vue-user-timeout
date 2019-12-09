@@ -11,13 +11,14 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
-      - uses: codecov/codecov-action@v1
         with:
           node-version: 12
           token: ${{ secrets.CODECOV_TOKEN }} #required
           flags: unittests #optional
+          file: ./coverage/coverage-final.json
           name: codecov-umbrella #optional
           fail_ci_if_error: true #optional (default = false)
       - run: npm ci
       - run: npm run lint
       - run: npm test
+      - uses: codecov/codecov-action@v1
