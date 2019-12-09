@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/jrtnq514/vue-user-timeout#readme",
   "dependencies": {
-    "npm": "^6.13.0",
+    "npm": "^6.13.1"
     "snyk": "^1.248.0"
   },
   "devDependencies": {
