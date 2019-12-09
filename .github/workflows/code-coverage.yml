@@ -15,7 +15,6 @@ jobs:
           node-version: 12
           token: ${{ secrets.CODECOV_TOKEN }} #required
           flags: unittests #optional
-          file: ./coverage/coverage-final.json
           name: codecov-umbrella #optional
           fail_ci_if_error: true #optional (default = false)
       - run: npm ci
