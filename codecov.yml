@@ -1,3 +1,4 @@
 codecov:
-  ignore:
-    - '.github/**'
+
+ignore:
+    - '**.github/**'
