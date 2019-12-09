@@ -10,7 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/.bin/eslint --fix --color src/**",
     "build": "gulp",
-    "cm": "npx git-cz"
+    "cm": "npx git-cz",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,7 @@
   "homepage": "https://github.com/jrtnq514/vue-user-timeout#readme",
   "dependencies": {
     "npm": "^6.13.1"
+    "snyk": "^1.248.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
@@ -61,5 +64,6 @@
       "eslint --fix",
       "git add"
     ]
-  }
+  },
+  "snyk": true
 }
