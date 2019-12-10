@@ -1,5 +1,10 @@
 name: Semantic Release
 
+on:
+  push:
+    branches:
+      - '**'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
