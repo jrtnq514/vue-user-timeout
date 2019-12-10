@@ -1,9 +1,10 @@
-name: Semantic Release
+name: Semantic Release - PreRelease
 
 on:
   push:
     branches:
-      - '**'
+      - alpha
+      - beta
 
 jobs:
   deploy:
