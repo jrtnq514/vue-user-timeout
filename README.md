@@ -1,7 +1,7 @@
 # vue-user-timeout
-A simple plugin to help with timeouts.
+#### A simple plugin to help with timeouts.
 
-
+[![codecov](https://codecov.io/gh/jrtnq514/vue-user-timeout/branch/master/graph/badge.svg)](https://codecov.io/gh/jrtnq514/vue-user-timeout)
 
 ## Getting started
 Install
