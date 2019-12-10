@@ -175,4 +175,57 @@ describe('User timeout Vue instance', () => {
       userTimeout.pause();
     });
   });
+
+  describe('destroy()', () => {
+    beforeEach(() => {
+      userTimeout.init();
+    });
+
+    test('destroy() - event emit', done => {
+      userTimeout.$on('timeout-destroyed', () => {
+        expect(true).toBe(true);
+        done();
+      });
+      userTimeout.destroy();
+    });
+
+    test('destroy() - not initialized', done => {
+      userTimeout.destroy();
+      userTimeout.$on('timeout-warning', msg => {
+        expect(msg).toBe("destroy() - Timeout hasn't been initialized.");
+        done();
+      });
+      userTimeout.destroy();
+    });
+
+    test('destroy() - values reset', done => {
+      userTimeout.$on('timeout-destroyed', () => {
+        expect(userTimeout.mergedOptions).toBe(null);
+        expect(userTimeout.isInitialized).toBe(false);
+        done();
+      });
+      userTimeout.destroy();
+    });
+  });
+
+  // describe('Timeout complete', () => {
+  //   beforeEach(() => {
+  //     userTimeout.init({ timeout: 500, updateInterval: 100 });
+  //   });
+  //
+  //   test('event emit', (done) => {
+  //     userTimeout.$on('timeout-completed', () => {
+  //       expect(true).toBe(true);
+  //       done();
+  //     });
+  //     userTimeout.start();
+  //
+  //     userTimeout.$on('timeout-error', (msg) => {
+  //       console.log(msg)
+  //       expect(true).toBe(true);
+  //       done();
+  //     });
+  //   });
+  //
+  // });
 });

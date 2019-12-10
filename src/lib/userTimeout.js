@@ -36,9 +36,11 @@ export default Vue => {
               this.start();
             }
           })
-          .catch(err => {
-            console.log(err);
-            console.log('There was an error adding event listeners');
+          .catch(() => {
+            this.$emit(
+              'timeout-error',
+              "init() - Couldn't initialize timeout instance."
+            );
           });
       },
 
@@ -113,6 +115,10 @@ export default Vue => {
       destroy() {
         return new Promise((resolve, reject) => {
           if (!this.isInitialized) {
+            this.$emit(
+              'timeout-warning',
+              "destroy() - Timeout hasn't been initialized."
+            );
             reject();
           }
           try {
@@ -127,6 +133,10 @@ export default Vue => {
             this.$emit('timeout-destroyed');
             resolve();
           } catch (err) {
+            this.$emit(
+              'timeout-error',
+              "destroy() - Couldn't destroy timeout instance."
+            );
             reject(err);
           }
         });
