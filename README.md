@@ -2,6 +2,8 @@
 #### A simple plugin to help with timeouts.
 
 [![codecov](https://codecov.io/gh/jrtnq514/vue-user-timeout/branch/master/graph/badge.svg)](https://codecov.io/gh/jrtnq514/vue-user-timeout)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![npm version](https://badge.fury.io/js/vue-user-timeout.svg)](https://badge.fury.io/js/vue-user-timeout)
 
 ## Getting started
 Install
@@ -12,16 +14,30 @@ Add plugin to your entry file
 ```javascript
 import VueUserTimeout from 'vue-user-timeout'
 
-Vue.use(VueUserTimeout, [options])
+Vue.use(VueUserTimeout, [[options](#options)])
 ```
 
 ## Usage
 
+Can be accessed through `this` or `Vue`
+```javascript
+this.$vueUserTimeout
+// or
+Vue.$vueUserTimeout
+```
+
+## Example
+
+Start the timeout after user authentication
+```javascript
+this.$vueUserTimeout.start();
+```
+
 
 ## Methods
-**init()** - Initializes the user timeout using the default options. Also adds event listeners for resetting the timeout.
+**init()** - Initializes the user timeout using the default options. Also adds event listeners for resetting the timeout. *This is automatically called when the plugin is added, but can be called manually if the instance is ever destroyed.* 
 ```javascript
-this.$vueUserTimeout.init([options])
+this.$vueUserTimeout.init([[options](#options)])
 ```
 **start()** - Starts the user timeout interval.
 ```javascript
