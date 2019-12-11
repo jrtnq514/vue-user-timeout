@@ -14,7 +14,7 @@ Add plugin to your entry file
 ```javascript
 import VueUserTimeout from 'vue-user-timeout'
 
-Vue.use(VueUserTimeout, [[options](#options)])
+Vue.use(VueUserTimeout, [options])
 ```
 
 ## Usage
@@ -26,18 +26,43 @@ this.$vueUserTimeout
 Vue.$vueUserTimeout
 ```
 
-## Example
+## Basic Example
+
+Add plugin to your entry file
+```javascript
+import VueUserTimeout from 'vue-user-timeout'
+
+// options are optional
+Vue.use(VueUserTimeout, {
+  timeout: 60000, // 10 min
+  updateInterval: 500, // .5 sec
+  events: ['resize', 'scroll', 'keydown', 'mousemove', 'click'],
+  startOnload: false,
+  destroyOnTimeout: true
+})
+```
 
 Start the timeout after user authentication
 ```javascript
-this.$vueUserTimeout.start();
+this.$vueUserTimeout.start()
+```
+Set a listener on the timeout-completed [event](#events) and set the callback to un-authenticate the user
+```javascript
+this.$vueUserTimeout.$on('timeout-completed', <callback>)
+```
+Make sure to remove the listener when done
+```javascript
+this.$vueUserTimeout.$off('timeout-completed', <callback>)
+```
+Optionally you could use the `$once` method
+```javascript
+this.$vueUserTimeout.$once('timeout-completed', <callback>)
 ```
 
-
 ## Methods
-**init()** - Initializes the user timeout using the default options. Also adds event listeners for resetting the timeout. *This is automatically called when the plugin is added, but can be called manually if the instance is ever destroyed.* 
+**init()** - Initializes the user timeout using the default [options](#options). Also adds event listeners for resetting the timeout. *This is automatically called when the plugin is added, but can be called manually if the instance is ever destroyed.* 
 ```javascript
-this.$vueUserTimeout.init([[options](#options)])
+this.$vueUserTimeout.init([options])
 ```
 **start()** - Starts the user timeout interval.
 ```javascript
@@ -60,6 +85,16 @@ this.$vueUserTimeout.pause()
 this.$vueUserTimeout.destroy()
 ```
 
+## Properties
+| property | type | description |
+|:-----------------|------------------|--------------------|
+| **mergedOptions** | `Object` | Object containing options. User provided options override the default. |
+| **startTime** | `Number` | Unix timestamp set on start. |
+| **currentTime** | `Number` | Unix timestamp set at every updateInterval. |
+| **elapsedTime** | `Number` | Difference between currentTime and startTime in milliseconds. |
+| **isActive** | `Boolean` | `true` if the timer is currently running |
+| **isInitialized** | `Boolean` | `true` if the timeout has been initialized. |
+
 ## Options
 | property | description | default | values |
 |:------------|-------------|---------------|-------------------|
@@ -70,8 +105,10 @@ this.$vueUserTimeout.destroy()
 | **destroyOnTimeout** | When `true` all listeners will be removed upon completion of the timeout event. *They can be added again using `init()`*. | `true` | `Boolean` |
 
 ## Events
+Use the `$on`, `$off`, or `$once` methods to set listeners 
+
 | event | description |
-|-----------------------|-------------|
+|:----------------------|-------------|
 | `timeout-initialized` | $vueUserTimeout has been initialized and is ready to use. |
 | `timeout-completed` | The timeout has completed. |
 | `timeout-started` | The timeout has started. |
@@ -83,15 +120,9 @@ this.$vueUserTimeout.destroy()
 ## Caveats
 You cannot call timeout methods on button click if 'click' is a reset event.
 
-## TODO
-- [ ] Listen for events. Handle only events user specifies
-    * Click
-    * Mouse move
-    * etc
+### Possible Features
+- [ ] Ability to target specific elements to listen for events
 - [ ] Directive to be added to elements
 - [ ] Store (Vuex) integration
 - [ ] SessionStorage support
-- [ ] Emit events/call a defined function that the user can extend/override
-- [ ] Linting
-- [ ] Tests
 - [ ] Warning option/event
