@@ -57,7 +57,6 @@ export default Vue => {
         this.timerInterval = setInterval(() => {
           this.currentTime = Date.now();
           this.elapsedTime = this.currentTime - this.startTime;
-          // console.log(`tick tick ${(this.elapsedTime / 1000).toFixed(3)}`);
           if (this.elapsedTime >= this.mergedOptions.timeout) {
             // emit event
             this.$emit('timeout-completed');
