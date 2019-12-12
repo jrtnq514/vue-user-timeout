@@ -30,10 +30,7 @@
     "url": "https://github.com/jrtnq514/vue-user-timeout/issues"
   },
   "homepage": "https://github.com/jrtnq514/vue-user-timeout#readme",
-  "dependencies": {
-    "npm": "^6.13.4",
-    "snyk": "^1.248.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
@@ -54,8 +51,10 @@
     "husky": "^3.0.9",
     "jest": "^24.9.0",
     "lint-staged": "^9.4.3",
+    "npm": "^6.13.4",
     "prettier": "^1.19.1",
     "semantic-release": "^16.0.0-beta.45",
+    "snyk": "^1.248.0",
     "terser-webpack-plugin": "^2.2.1",
     "vue": "^2.6.10",
     "webpack": "^4.41.2",
