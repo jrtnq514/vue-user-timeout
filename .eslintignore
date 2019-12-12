@@ -64,4 +64,5 @@ typings/
 .idea
 
 # dist
-dist/
+dist/*
+**/dist/*

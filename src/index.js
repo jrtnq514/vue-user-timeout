@@ -1,42 +1,22 @@
-const userTimeout = require('./lib/userTimeout');
+import UserTimeout from './lib/userTimeout';
 
-// eslint-disable-next-line func-names
-(function() {
-  /**
-   * Install plugin
-   * @param Vue
-   * @param options
-   */
+const VueUserTimeout = {
   // eslint-disable-next-line no-unused-vars
-  function plugin(Vue, options) {
-    if (plugin.installed) {
-      return;
-    }
-
-    plugin.installed = true;
+  install(Vue, options = {}) {
+    // console.log('VueUserTimeout Installed');
+    const userTimeout = UserTimeout(Vue);
+    userTimeout.init(options);
+    // eslint-disable-next-line no-param-reassign
+    Vue.prototype.$userTimeout = userTimeout;
     // eslint-disable-next-line no-param-reassign
     Vue.$userTimeout = userTimeout;
+  },
+};
 
-    Object.defineProperties(Vue.prototype, {
-      $userTimeout: {
-        get() {
-          return userTimeout;
-        },
-      },
-    });
-  }
+// Logic to determine how to include the plugin
+if (window.Vue && typeof window !== 'undefined') {
+  // eslint-disable-next-line no-undef
+  window.Vue.use(VueUserTimeout);
+}
 
-  // Logic to determine how to include the plugin
-  if (typeof exports === 'object') {
-    module.exports = plugin;
-    // eslint-disable-next-line no-undef
-  } else if (typeof define === 'function' && define.amd) {
-    // eslint-disable-next-line no-undef, func-names
-    define([], function() {
-      return plugin;
-    });
-  } else if (window.Vue && typeof window !== 'undefined') {
-    // eslint-disable-next-line no-undef
-    Vue.use(plugin, options);
-  }
-})();
+export default VueUserTimeout;
