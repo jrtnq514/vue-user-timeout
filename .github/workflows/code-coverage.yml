@@ -1,0 +1,25 @@
+name: Code Coverage
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  codecov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} #required
+          file: coverage/**/*
+          flags: unittests #optional
+          name: codecov-umbrella #optional
+          fail_ci_if_error: true #optional (default = false)
